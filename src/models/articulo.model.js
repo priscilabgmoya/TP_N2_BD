@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require("../db/db.db");
+const { sub_familia } = require('./sub_familia.model');
 
 const Articulo = sequelize.define('articulo', {
     id_articulo: {
@@ -21,12 +22,11 @@ const Articulo = sequelize.define('articulo', {
     },
   },{ freezeTableName: true });
 
-  Articulo.associate = (models) => {
-    Articulo.belongsTo(models.sub_familia, {
-      foreignKey: 'id_subfamilia',
-      as: 'sub_familia',
-    });
-  };
+// Una sub_familia tiene muchos artículos
+sub_familia.hasMany(Articulo, { foreignKey: 'id_subfamilia' });
+Articulo.belongsTo(sub_familia, { foreignKey: 'id_subfamilia' });
+
+
   const addArticulo = async (data, options = {}) => {
     const { nombre , codigo_barra, id_subfamilia} = data;
     try {
@@ -42,4 +42,7 @@ const Articulo = sequelize.define('articulo', {
         return { error: error };
     }
 }
-module.exports = addArticulo;
+module.exports = {
+  addArticulo: addArticulo,
+  articulo: Articulo
+};

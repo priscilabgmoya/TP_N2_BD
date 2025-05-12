@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require("../db/db.db");
+const { sector } = require('./sector.model');
 
 const Seccion = sequelize.define('seccion', {
     id_seccion: {
@@ -17,13 +18,9 @@ const Seccion = sequelize.define('seccion', {
     },
   } ,{ freezeTableName: true });
 
-  Seccion.associate = (models) => {
-    Seccion.belongsTo(models.Sector, {
-      foreignKey: 'id_sector',
-      as: 'sector',
-    });
-  };
-
+// Un sector tiene muchas secciones
+sector.hasMany(Seccion, { foreignKey: 'id_sector' });
+Seccion.belongsTo(sector, { foreignKey: 'id_sector' });
   const addSeccion = async (data, options = {}) => {
     const { nombre , id_sector} = data;
     try {
@@ -39,4 +36,7 @@ const Seccion = sequelize.define('seccion', {
         return { error: error };
     }
 }
-module.exports = addSeccion;
+module.exports = {
+  addSeccion:addSeccion, 
+seccion: Seccion
+};

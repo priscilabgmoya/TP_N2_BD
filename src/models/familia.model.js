@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require("../db/db.db");
+const { grupoFamiliar } = require('./grupo_familia.model');
 
 const Familia = sequelize.define('familia', {
     id_familia: {
@@ -16,13 +17,10 @@ const Familia = sequelize.define('familia', {
       allowNull: false,
     },
   },{ freezeTableName: true });
+// Una G_Familia tiene muchas Familias
+grupoFamiliar.hasMany(Familia, { foreignKey: 'id_gfamilia' });
+Familia.belongsTo(grupoFamiliar, { foreignKey: 'id_gfamilia' });
 
-  Familia.associate = (models) => {
-    Familia.belongsTo(models.G_Familia, {
-      foreignKey: 'id_gfamilia',
-      as: 'gFamilia',
-    });
-  };
   const addFamilia = async (data, options = {}) => {
     const { nombre , id_gfamilia} = data;
     try {
@@ -38,4 +36,7 @@ const Familia = sequelize.define('familia', {
         return { error: error };
     }
 }
-module.exports = addFamilia;
+module.exports = {
+  addFamilia:addFamilia,
+  familia: Familia
+};

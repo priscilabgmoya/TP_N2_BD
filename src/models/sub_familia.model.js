@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require("../db/db.db");
+const { familia } = require('./familia.model');
 
 const SubFamilia = sequelize.define('Sub_Familia', {
     id_subfamilia: {
@@ -17,12 +18,10 @@ const SubFamilia = sequelize.define('Sub_Familia', {
     },
   },{ freezeTableName: true });
 
-  SubFamilia.associate = (models) => {
-    SubFamilia.belongsTo(models.Familia, {
-      foreignKey: 'id_familia',
-      as: 'familia',
-    });
-  };
+// Una familia tiene muchas subfamilias
+familia.hasMany(SubFamilia, { foreignKey: 'id_familia' });
+SubFamilia.belongsTo(familia, { foreignKey: 'id_familia' });
+
   const addSubFamilia = async (data, options = {}) => {
     const { nombre , id_familia} = data;
     try {
@@ -38,4 +37,7 @@ const SubFamilia = sequelize.define('Sub_Familia', {
         return { error: error };
     }
 }
-module.exports = addSubFamilia;
+module.exports = {
+  addSubFamilia: addSubFamilia,
+  sub_familia: SubFamilia
+};

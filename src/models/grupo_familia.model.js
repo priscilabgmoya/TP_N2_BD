@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require("../db/db.db");
+const { seccion } = require('./seccion.model');
 
 const GFamilia = sequelize.define('g_familia', {
     id_gfamilia: {
@@ -17,12 +18,9 @@ const GFamilia = sequelize.define('g_familia', {
     },
   },{ freezeTableName: true });
 
-  GFamilia.associate = (models) => {
-    GFamilia.belongsTo(models.Seccion, {
-      foreignKey: 'id_seccion',
-      as: 'seccion',
-    });
-  };
+seccion.hasMany(GFamilia, { foreignKey: 'id_seccion' });
+GFamilia.belongsTo(seccion, { foreignKey: 'id_seccion' });
+
   const addGrupoFamilia = async (data, options = {}) => {
     const { nombre , id_seccion} = data;
     try {
@@ -38,4 +36,7 @@ const GFamilia = sequelize.define('g_familia', {
         return { error: error };
     }
 }
-module.exports = addGrupoFamilia;
+module.exports = {
+  addGrupoFamilia: addGrupoFamilia,
+  grupoFamiliar: GFamilia
+};

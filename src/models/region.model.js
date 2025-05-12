@@ -31,4 +31,7 @@ const addRegion = async (data, options = {}) => {
         return { error: error };
     }
 }
-module.exports = addRegion;
+module.exports = {
+    addRegion: addRegion, 
+    region: Region
+};

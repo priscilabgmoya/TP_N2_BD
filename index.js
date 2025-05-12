@@ -1,19 +1,19 @@
 const fs = require('fs');
 const Papa = require('papaparse');
 const { sequelize } = require("./src/db/db.db.js");
-const addRegion = require('./src/models/region.model.js');
+const {addRegion} = require('./src/models/region.model.js');
 const { connection } = require('./src/db/db.db.js');
-const addSector = require('./src/models/sector.model.js');
-const addTipoAccion = require('./src/models/tipoAccion.model.js');
-const addSeccion = require('./src/models/seccion.model.js');
-const addGrupoFamilia = require('./src/models/grupo_familia.model.js');
-const addFamilia = require('./src/models/familia.model.js');
-const addSupermercado = require('./src/models/supermecado.model.js');
-const addSubFamilia = require('./src/models/sub_familia.model.js');
-const addArticulo = require('./src/models/articulo.model.js');
+const {addSector} = require('./src/models/sector.model.js');
+const {addTipoAccion} = require('./src/models/tipoAccion.model.js');
+const {addSeccion} = require('./src/models/seccion.model.js');
+const {addGrupoFamilia} = require('./src/models/grupo_familia.model.js');
+const {addFamilia} = require('./src/models/familia.model.js');
+const {addSupermercado} = require('./src/models/supermecado.model.js');
+const {addSubFamilia} = require('./src/models/sub_familia.model.js');
+const {addArticulo} = require('./src/models/articulo.model.js');
 const addVenta = require('./src/models/venta.model.js');
 const convertirFecha = require('./src/ultis/fecha.utils.js');
-
+let  data_no_load = []
 const archivoCSV = fs.readFileSync('./src/archivo/tbloperaciones-mejora.csv', 'utf8');
 
 Papa.parse(archivoCSV, {
@@ -21,36 +21,29 @@ Papa.parse(archivoCSV, {
   skipEmptyLines: true,
   complete: async function (results) {
     const {data} = results;
-    console.log(data[0]);
-    const element = data[0]; 
-    const {REGION, COMPETENCIA, SECTOR, SECCION, FAMILIA } = element; 
-    const typeAction = element["TIPO DE ACCION"]
     await connection(); 
-    console.log(typeAction);
-    console.log(element);
-    // const {data: dataRegion, error} = await addRegion({descripcion: REGION})
    await addData(data)
+   console.table(data_no_load);
     
     
     
     
   }
 });
-const data_no_load = []
-console.table(data_no_load);
+
 
 const addData = async (data)=>{
   for (let index = 0; index < data.length; ) {
     const element = data[index];
     const transaction = await sequelize.transaction();
 
+    const { REGION, COMPETENCIAS, SECTOR, SECCION, FAMILIA, SCANNING, DESDE, HASTA, MONTO } = element;
+    const typeAction = element["TIPO DE ACCION"];
+    const gFamilia = element["G-FAMILIA"];
+    const subFamilia = element["SUB-FAMILIA"];
+    const descripcionArt = element["DESCRIPCION + PACKAGIN"];
+    const fechaCarga = element["FECHA DE CARGA"];
     try {
-      const { REGION, COMPETENCIAS, SECTOR, SECCION, FAMILIA, SCANNING, DESDE, HASTA, MONTO } = element;
-      const typeAction = element["TIPO DE ACCION"];
-      const gFamilia = element["G-FAMILIA"];
-      const subFamilia = element["SUB-FAMILIA"];
-      const descripcionArt = element["DESCRIPCION + PACKAGIN"];
-      const fechaCarga = element["FECHA DE CARGA"];
   
       const { data: dataRegion , error: errorRegion} = await addRegion({ descripcion: REGION }, { transaction });
       if(errorRegion) throw errorRegion
@@ -83,21 +76,17 @@ const addData = async (data)=>{
         id_supermercado: dataSuper.dataValues.id_supermercado,
         id_tipo_accion: dataTipo.dataValues.id,
         id_articulo: dataArticulo.dataValues.id_articulo,
-        monto: parseFloat(MONTO)
+        monto: parseFloat(MONTO) || 0 
       };
   
       const { data: datVenta, error: errorVenta } = await addVenta({...venta}, { transaction });
       if(errorVenta) throw errorVenta
-
-      console.log(element);
-      
-      console.table([datVenta]);
       await transaction.commit(); // ✅ Confirmamos la transacción
       // ✅ Si todo fue exitoso, eliminar el elemento del array
       data.splice(index, 1);
     } catch (err) {
       await transaction.rollback(); 
-      data_no_load({descripcionArt, SCANNING}); 
+      data_no_load.push({descripcionArt, SCANNING}); 
       console.error('❌ Error al procesar el elemento:', err);
       index++; // avanzar al siguiente solo si hubo error
     }

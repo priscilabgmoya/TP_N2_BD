@@ -1,5 +1,9 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require("../db/db.db");
+const { region } = require('./region.model');
+const { supermercado } = require('./supermecado.model');
+const { articulo } = require('./articulo.model');
+const { tipo_accion } = require('./tipoAccion.model');
 
 
 const Venta = sequelize.define('Venta', {
@@ -46,27 +50,20 @@ const Venta = sequelize.define('Venta', {
 });
 
 // Relaciones (asociaciones)
-Venta.associate = (models) => {
-  Venta.belongsTo(models.region, {
-    foreignKey: 'id_region',
-    as: 'region'
-  });
+// Una región tiene muchas ventas
 
-  Venta.belongsTo(models.supermercados, {
-    foreignKey: 'id_supermercado',
-    as: 'supermercados'
-  });
 
-  Venta.belongsTo(models.tipo_accion, {
-    foreignKey: 'id_tipo_accion',
-    as: 'tipos_accion'
-  });
+// Un supermercado tiene muchas ventas
+supermercado.hasMany(Venta, { foreignKey: 'id_supermercado' });
+Venta.belongsTo(supermercado, { foreignKey: 'id_supermercado' });
 
-  Venta.belongsTo(models.articulo, {
-    foreignKey: 'id_articulo',
-    as: 'articulo'
-  });
-};
+// Un tipo de acción tiene muchas ventas
+tipo_accion.hasMany(Venta, { foreignKey: 'id_tipo_accion' });
+Venta.belongsTo(tipo_accion, { foreignKey: 'id_tipo_accion' });
+
+// Un artículo tiene muchas ventas
+articulo.hasMany(Venta, { foreignKey: 'id_articulo' });
+Venta.belongsTo(articulo, { foreignKey: 'id_articulo' });
 
 const addVenta = async (data, options = {}) => {
 

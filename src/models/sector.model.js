@@ -27,4 +27,7 @@ const Sector = sequelize.define('sectores', {
         return { error: error };
     }
 }
-module.exports = addSector;
+module.exports = {
+  addSector: addSector,
+  sector: Sector
+};

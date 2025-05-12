@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require("../db/db.db");
+const { region } = require('./region.model');
 
 const Supermercado = sequelize.define('supermercados', {
     id_supermercado: {
@@ -23,12 +24,9 @@ const Supermercado = sequelize.define('supermercados', {
     freezeTableName: true,
     timestamps: false
   });
-  Supermercado.associate = (models) => {
-    Supermercado.belongsTo(models.Seccion, {
-      foreignKey: 'id_region',
-      as: 'region',
-    });
-  };
+ region.hasMany(Supermercado, { foreignKey: 'id_region' });
+Supermercado.belongsTo(region, { foreignKey: 'id_region' });
+
   const addSupermercado = async (data, options = {}) => {
     const { nombre, codigo, id_region } = data;
     try {
@@ -44,4 +42,7 @@ const Supermercado = sequelize.define('supermercados', {
         return { error: error };
     }
 }
-module.exports = addSupermercado;
+module.exports = {
+  addSupermercado: addSupermercado,
+  supermercado : Supermercado
+};

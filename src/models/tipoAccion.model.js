@@ -31,4 +31,7 @@ const addTipoAccion = async (data, options = {}) => {
         return { error: error };
     }
 }
-module.exports = addTipoAccion;
+module.exports = {
+  addTipoAccion:addTipoAccion,
+  tipo_accion: TipoAccion
+};
