@@ -10,6 +10,7 @@ Este repositorio contiene el Trabajo Práctico Nº2 de la materia **Bases de Dat
 * `models/`: Definición de modelos Sequelize que representan las entidades de la base de datos.
 * `archivo/`: Archivos de migraciones para crear las tablas automáticamente.
 * `config/`: Configuración de conexión a la base de datos (usuario, contraseña, host, etc.).
+* `consultas/`: Contiene las consultas realzidas por el equipo. 
 * `db.db.js`: Archivo principal para la conexión con MariaDB.
 * `index.js`: Punto de entrada para ejecutar el proyecto.
 * `README.md`: Documentación del proyecto.
@@ -46,20 +47,7 @@ Este repositorio contiene el Trabajo Práctico Nº2 de la materia **Bases de Dat
    DB_DIALECT=mariadb
    ```
 
-4. Crea la base de datos en MariaDB:
-
-   ```sql
-   CREATE DATABASE tp_n2_bd;
-   ```
-
-5. Ejecuta las migraciones y los seeders:
-
-   ```bash
-   npx sequelize-cli db:migrate
-   npx sequelize-cli db:seed:all
-   ```
-
-6. Inicia el proyecto:
+3. Inicia el proyecto:
 
    ```bash
    node index.js
@@ -67,7 +55,7 @@ Este repositorio contiene el Trabajo Práctico Nº2 de la materia **Bases de Dat
 
 ## 🔍 Consultas
 
-En el archivo `consultas.js` se encuentran las consultas desarrolladas con Sequelize que permiten realizar operaciones como:
+En el carpeta `consultas` se encuentran las consultas desarrolladas con SQL que permiten realizar operaciones como:
 
 * Obtener registros específicos.
 * Filtrar por atributos.
@@ -78,10 +66,11 @@ En el archivo `consultas.js` se encuentran las consultas desarrolladas con Seque
 
 Este proyecto se distribuye bajo la Licencia MIT.
 
-## 👩‍💻 Autor
+## 👩‍💻 Autores
 
-* **Priscila B. G. Moya** - [GitHub](https://github.com/priscilabgmoya)
-
+* **Daniel G. Aybar** - [GitHub](https://github.com/daniaybarcode)
+* **Priscila B. García Moya** - [GitHub](https://github.com/priscilabgmoya)
+* **María P. Madrid** - [GitHub](https://github.com/PAULAMADRID2442)
 ---
 
 ¿Querés que lo adapte más al formato de algún TP que venís usando o lo deje así? También puedo generar un ejemplo de `.env`, migración o consulta si necesitás.
