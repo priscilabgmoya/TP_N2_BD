@@ -9,7 +9,6 @@ Este repositorio contiene el Trabajo Práctico Nº2 de la materia **Bases de Dat
 
 * `models/`: Definición de modelos Sequelize que representan las entidades de la base de datos.
 * `archivo/`: Archivos de migraciones para crear las tablas automáticamente.
-* `consultas/`: Contiene las consultas realzidas por el equipo. 
 * `db.db.js`: Archivo principal para la conexión con MariaDB.
 * `index.js`: Punto de entrada para ejecutar el proyecto.
 * `README.md`: Documentación del proyecto.
@@ -51,15 +50,6 @@ Este repositorio contiene el Trabajo Práctico Nº2 de la materia **Bases de Dat
    ```bash
    node index.js
    ```
-
-## 🔍 Consultas
-
-En el carpeta `consultas` se encuentran las consultas desarrolladas con SQL que permiten realizar operaciones como:
-
-* Obtener registros específicos.
-* Filtrar por atributos.
-* Consultas con `include` (JOINs).
-* Ordenamientos y agrupamientos.
 
 ## 📄 Licencia
 
