@@ -60,6 +60,3 @@ Este proyecto se distribuye bajo la Licencia MIT.
 * **Daniel G. Aybar** - [GitHub](https://github.com/daniaybarcode)
 * **Priscila B. García Moya** - [GitHub](https://github.com/priscilabgmoya)
 * **María P. Madrid** - [GitHub](https://github.com/PAULAMADRID2442)
----
-
-¿Querés que lo adapte más al formato de algún TP que venís usando o lo deje así? También puedo generar un ejemplo de `.env`, migración o consulta si necesitás.
