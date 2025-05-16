@@ -9,7 +9,6 @@ Este repositorio contiene el Trabajo Práctico Nº2 de la materia **Bases de Dat
 
 * `models/`: Definición de modelos Sequelize que representan las entidades de la base de datos.
 * `archivo/`: Archivos de migraciones para crear las tablas automáticamente.
-* `config/`: Configuración de conexión a la base de datos (usuario, contraseña, host, etc.).
 * `consultas/`: Contiene las consultas realzidas por el equipo. 
 * `db.db.js`: Archivo principal para la conexión con MariaDB.
 * `index.js`: Punto de entrada para ejecutar el proyecto.
